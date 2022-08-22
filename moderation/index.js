@@ -5,9 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-app.post("/api/events", async (req, res) => {
-  const { type, data } = req.body;
-
+const handleEvent = async (type, data) => {
   if (type === "CommentCreated") {
     const status = data.content.toLowerCase().includes("orange")
       ? "rejected"
@@ -21,10 +19,28 @@ app.post("/api/events", async (req, res) => {
       },
     });
   }
+};
+
+app.post("/api/events", (req, res) => {
+  const { type, data } = req.body;
+
+  handleEvent(type, data);
 
   res.send({});
 });
 
-app.listen(8003, () => {
+app.listen(8003, async () => {
   console.log("listening on port 8003");
+
+  try {
+    const res = await axios.get("http://localhost:8005/api/events");
+
+    for (const event of res.data) {
+      console.log("Processing event: ", event.type);
+
+      handleEvent(event.type, event.data);
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
 });
