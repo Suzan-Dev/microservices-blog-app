@@ -17,6 +17,9 @@ app.post("/api/events", (req, res) => {
   axios.post("http://localhost:8002/api/events", event).catch((err) => {
     console.log(err.message);
   });
+  axios.post("http://localhost:8003/api/events", event).catch((err) => {
+    console.log(err.message);
+  });
 
   res.status(200).json({ status: "OK" });
 });
