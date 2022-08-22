@@ -5,8 +5,16 @@ const app = express();
 
 app.use(express.json());
 
+const events = [];
+
+app.get("/api/events", (req, res) => {
+  res.send(events);
+});
+
 app.post("/api/events", (req, res) => {
   const event = req.body;
+
+  events.push(event);
 
   axios.post("http://localhost:8000/api/events", event).catch((err) => {
     console.log(err.message);

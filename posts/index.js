@@ -35,8 +35,6 @@ app.post("/api/posts", async (req, res) => {
 });
 
 app.post("/api/events", (req, res) => {
-  console.log(req.body.type);
-
   res.send({});
 });
 
